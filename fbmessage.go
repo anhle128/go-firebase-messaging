@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"firebase.google.com/go/messaging"
+	"golang.org/x/oauth2/google"
 
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
@@ -34,9 +35,27 @@ type Message struct {
 	Priority string
 }
 
-// Init init messaging handler
-func Init(credentials string) (Handler, error) {
+// InitWithCredentialsFile init messaging handler with credentials file
+func InitWithCredentialsFile(credentials string) (Handler, error) {
 	opt := option.WithCredentialsFile(credentials)
+	app, err := firebase.NewApp(context.Background(), nil, opt)
+	if err != nil {
+		return Handler{}, err
+	}
+
+	client, err := app.Messaging(context.Background())
+	if err != nil {
+		return Handler{}, err
+	}
+
+	return Handler{
+		client: client,
+	}, nil
+}
+
+// InitWithCredentials init messaging handler with credentials object
+func InitWithCredentials(creds *google.Credentials) (Handler, error) {
+	opt := option.WithCredentials(creds)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		return Handler{}, err

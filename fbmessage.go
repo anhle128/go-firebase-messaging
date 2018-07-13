@@ -24,15 +24,19 @@ type MessageLoc struct {
 	Sound        string
 	Badge        int
 	Priority     string
+	ClickAction  string
+	Data         map[string]string
 }
 
 // Message message with title - body
 type Message struct {
-	Title    string
-	Body     string
-	Sound    string
-	Badge    int
-	Priority string
+	Title       string
+	Body        string
+	Sound       string
+	Badge       int
+	Priority    string
+	ClickAction string
+	Data        map[string]string
 }
 
 // InitWithCredentialsFile init messaging handler with credentials file

@@ -8,11 +8,17 @@ import (
 )
 
 func (h Handler) generateMessageWithBodyLoc(message MessageLoc) fbmessaging.Message {
+	cusData := make(map[string]interface{})
+	cusData["data"] = message.Data
+
 	return fbmessaging.Message{
 		// notify data for andorid
 		Android: &fbmessaging.AndroidConfig{
 			CollapseKey: message.BodyLocKey,
 			Priority:    message.Priority,
+			Notification: &fbmessaging.AndroidNotification{
+				ClickAction: message.ClickAction,
+			},
 		},
 		Data: map[string]string{
 			"body_loc_key":  message.BodyLocKey,
@@ -30,6 +36,7 @@ func (h Handler) generateMessageWithBodyLoc(message MessageLoc) fbmessaging.Mess
 						LocArgs: message.BodyLocArgs,
 					},
 				},
+				CustomData: cusData,
 			},
 		},
 		// notify data for web
@@ -45,11 +52,17 @@ func (h Handler) generateMessageWithBodyLoc(message MessageLoc) fbmessaging.Mess
 }
 
 func (h Handler) generateMessageWithTitleBodyLoc(message MessageLoc) fbmessaging.Message {
+	cusData := make(map[string]interface{})
+	cusData["data"] = message.Data
+
 	return fbmessaging.Message{
 		// notify data for andorid
 		Android: &fbmessaging.AndroidConfig{
 			CollapseKey: message.BodyLocKey,
 			Priority:    message.Priority,
+			Notification: &fbmessaging.AndroidNotification{
+				ClickAction: message.ClickAction,
+			},
 		},
 		Data: map[string]string{
 			"title_loc_key":  message.TitleLocKey,
@@ -71,6 +84,7 @@ func (h Handler) generateMessageWithTitleBodyLoc(message MessageLoc) fbmessaging
 						TitleLocArgs: message.TitleLocArgs,
 					},
 				},
+				CustomData: cusData,
 			},
 		},
 		// notify data for web
@@ -87,9 +101,15 @@ func (h Handler) generateMessageWithTitleBodyLoc(message MessageLoc) fbmessaging
 }
 
 func (h Handler) generateMessageTitleBody(message Message) fbmessaging.Message {
+	cusData := make(map[string]interface{})
+	cusData["data"] = message.Data
+
 	return fbmessaging.Message{
 		Android: &fbmessaging.AndroidConfig{
 			Priority: "high",
+			Notification: &fbmessaging.AndroidNotification{
+				ClickAction: message.ClickAction,
+			},
 		},
 		Data: map[string]string{
 			"title": message.Title,
@@ -106,6 +126,7 @@ func (h Handler) generateMessageTitleBody(message Message) fbmessaging.Message {
 						Title: message.Title,
 					},
 				},
+				CustomData: cusData,
 			},
 		},
 		Webpush: &fbmessaging.WebpushConfig{
@@ -120,9 +141,16 @@ func (h Handler) generateMessageTitleBody(message Message) fbmessaging.Message {
 }
 
 func (h Handler) generateMessageBody(message Message) fbmessaging.Message {
+
+	cusData := make(map[string]interface{})
+	cusData["data"] = message.Data
+
 	return fbmessaging.Message{
 		Android: &fbmessaging.AndroidConfig{
 			Priority: "high",
+			Notification: &fbmessaging.AndroidNotification{
+				ClickAction: message.ClickAction,
+			},
 		},
 		Data: map[string]string{
 			"body":  message.Body,
@@ -137,6 +165,7 @@ func (h Handler) generateMessageBody(message Message) fbmessaging.Message {
 						Body: message.Body,
 					},
 				},
+				CustomData: cusData,
 			},
 		},
 		Webpush: &fbmessaging.WebpushConfig{
